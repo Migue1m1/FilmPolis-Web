@@ -1,0 +1,103 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+<div style="text-align:center">
+
+<style>
+  #sugg{
+    position:absolute;
+  }
+</style>
+
+<link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
+
+<div class="container-fluid well">
+  <div class="row-fluid">
+      <img class="img-rounde img-responsive" alt="Filmpolis!" width="1190" src="./assets/banner.jpg" (click)="clear()">
+  </div>
+  
+  <hr>
+
+  <div class="row-fluid">
+
+  <div class="col-md-2">
+<select class="form-control btn btn-primary" [(ngModel)]="typesearch">
+    <option>Peliculas</option>
+    <option>Actores</option>
+    <option>Directores</option>
+  </select>
+  </div>
+  <div class="col-md-10">
+    <input type="text" class="form-control" [(ngModel)]="term" (ngModelChange)="searchMiddleware()" placeholder="¿Qué estás buscando?">
+        <div style="text-align:justify;"  *ngFor="let item of actorsuggestion; let i = index">
+          <ul class="list-group">
+          <button   class=" btn list-group-item" *ngIf="showinfo && term != '' " (click)="bringMiddleware(item.name === undefined ? item.title : item.name)">{{item.name === undefined ? item.title : item.name}}</button>
+        </ul>
+        </div>
+  </div>
+
+
+
+  <hr>
+
+
+
+<div class="row-fluid" >
+      <div class="container-fluid well" *ngIf="show">
+        <div class="col-md-4">
+            <img src="{{actor.imageURL}}" alt=""  width="300">
+        </div>
+      <div class="col-md-8" style="text-align: justify">
+        <h3>Nombre: {{actor.name}} </h3>
+        <h3>Fecha de nacimiento: {{actor.birthDay}} </h3>
+        <h3>Fecha de muerte: {{actor.deathDay}} </h3>
+        <h3>Lugar de nacimiento: {{actor.birthPlace}} </h3>
+        <h3>Género: {{actor.gender}}</h3>
+        <h3>Edad: {{edadActor}}</h3>
+        <h3>Biografía: </h3><p>{{actor.biography}} </p>
+      </div>
+  </div> 
+</div>
+
+
+<div class="row-fluid well" >
+      <div class="container-fluid well" *ngIf="showMovie">
+
+          <div class="col-md-4">
+            <img src="{{movie.imageURL}}" alt=""  width="300">
+        <div class="row">
+          <h3>Puntuación: <h4>{{movie.imdbRating}} / 10</h4></h3>
+        </div>
+      </div>
+
+      <div class="col-md-8" style="text-align: justify">
+        <h3>Título: <h4>{{movie.title}}</h4></h3> 
+        <h3>Fecha de lanzamiento: <h4>{{movie.released}}</h4></h3>
+        <h3>Estudio de producción: <h4>{{movie.studio}}</h4></h3>
+        <h3>Género: <h4>{{movie.genre}}</h4></h3>
+        <h3>Lenguaje: <h4>{{movie.language}}</h4></h3>
+        <h3>Duración: <h4>{{movie.runtime}} min</h4></h3>
+        <h3>Clasificación: <h4>{{movie.rated}}</h4></h3>
+        <h3>Argumento: </h3><p>{{movie.description}}</p>
+      </div>
+  </div> 
+</div>
+
+
+
+<hr>
+
+<!--<div class="row-fluid">
+  <a class="btn btn-primary" href="/login"login>Login</a>
+  <router-outlet></router-outlet>
+</div>-->
+
+
+<footer class="navbar-default navbar-fixed-bottom">
+  <div class="container-fluid">
+    <span>Todos los derechos reservados. </span>
+  </div>
+</footer>
+
+</div>
+
+</div>
