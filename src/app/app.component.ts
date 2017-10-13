@@ -4,6 +4,8 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CompleterService, CompleterData } from 'ng2-completer';
 
+import * as Moment from "moment";
+
 import { Actor } from './actor';
 import { Suggestions } from './suggestions';
 import { Director } from './director';
@@ -21,14 +23,16 @@ import 'rxjs/add/operator/map';
 export class AppComponent{
   	title = 'FilmPolis';
   	term: string = '';
-  	edadActor;
+  	edadActor = 0;
   	public actorsuggestion = Array <Suggestions> ();
   	public actor: Actor;
   	public movie: Movie;
   	showinfo  = false;
   	show      = false;
   	showMovie = false;
+  	showerror = false;
   	typesearch = 'Peliculas';
+  	valorEdad = '';
  
 
   constructor(private http: Http) { 
@@ -175,6 +179,7 @@ export class AppComponent{
 	 	.subscribe(res => {
 	 			this.actor = res.data;
 	 			this.validActor();
+	 			this.mostrarEdad();
 	 			console.log(this.actor);
 	 		}
 	 	)
@@ -211,30 +216,51 @@ export class AppComponent{
 
 		if(this.movie.description =="")
 			this.movie.description = "Sin descripcion";
+
+		if(this.movie.runtime =="")
+			this.movie.runtime = "Sin especificar los"
+
 	}
 
-	diff_years(dt2, dt1) 
-		 {
-
-		  var diff =(dt2.getTime() - dt1.getTime()) / 1000;
-		   diff /= (60 * 60 * 24);
-		  return Math.abs(Math.round(diff/365.25));
-		   
-		 }
-
-	transformStringToDate(fecha)
-	{
-		var nuevafecha = new Date(fecha);
-
-		return nuevafecha;
-	}
 
 	mostrarEdad(){
-		var fechaActual = new Date().toLocaleDateString();
 
-		var fechaActor = this.transformStringToDate(this.actor.birthDay);
+		console.log(this.actor.deathDay);
 
-		this.edadActor = this.diff_years(fechaActor , fechaActual);
+		if(this.actor.deathDay == 'Aún vivo')
+		{
+			var fechaActual = new Date().getTime();
+
+			var fechaActor = new Date(this.actor.birthDay).getTime();
+
+			var diff = fechaActual - fechaActor;
+			var days = diff/(1000*60*60*24);
+			var years = days / 365;
+
+			var age = Math.floor(years);
+
+			this.valorEdad = ' '+ age;
+
+			console.log(age );		
+		}
+
+		else
+		{
+			var fechaNacimiento = new Date(this.actor.birthDay).getTime();
+
+			var fechaMuerte = new Date(this.actor.deathDay).getTime();
+
+			var diff = fechaMuerte - fechaNacimiento;
+			var days = diff/(1000*60*60*24);
+			var years = days / 365;
+
+			var age = Math.floor(years);
+
+			this.valorEdad = 'Muerto a los ' + age;
+			console.log(age );
+		}
+
+		
 	}
 
 	clear(){
